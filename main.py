@@ -132,6 +132,7 @@ flow = False
 cyc = False
 
 beach = False
+city = False
 
 
 title_surf = pygame.image.load('PixelArt/Game1/TitleScreen/background.png').convert()
@@ -292,16 +293,18 @@ cyc_surf = cyc_walk[cyc_walk_index]
 cyc_rect = cyc_surf.get_rect(midbottom = (80,300))
 
 
-sky_surface = pygame.image.load('PixelArt/Game1/DaySky1.png').convert() #Loads the background image
-ground_surface = pygame.image.load('PixelArt/Game1/Ground.png').convert() #Loads the ground image
 
 stage_text = test_font.render('Select a Stage',False,'#b6d53c')
 stage_text = pygame.transform.rotozoom(stage_text,0,2.5)
 stage_text_rect = stage_text.get_rect(center = (400,200))
 
-beach_surface = pygame.image.load('PixelArt/Game1/stages/beach.png').convert()
+beach_surface = pygame.image.load('PixelArt/Game1/stages/beach/beach.png').convert()
 beach_stage = pygame.transform.rotozoom(beach_surface,0,0.25)
 beach_rect = beach_stage.get_rect(center = (200,75))
+
+city_surface = pygame.image.load('PixelArt/Game1/stages/city/city.png').convert()
+city_stage = pygame.transform.rotozoom(city_surface,0,0.25)
+city_rect = city_stage.get_rect(center = (600,75))
 
 thumb_cloud_surf = pygame.image.load('PixelArt/Game1/Clouds/thumb_cloud.png').convert_alpha()
 thumb_cloud_rect = thumb_cloud_surf.get_rect(midleft = (800,70))
@@ -413,6 +416,10 @@ while True: #Creates our game loop. While our loop is active, the game runs.
                     stage_select = False
                     game_active = True
                     beach = True
+                if city_rect.collidepoint(event.pos):
+                    stage_select = False
+                    game_active = True
+                    city = True
 
         if event.type == obstacle_timer and game_active:
             if randint(0,2):
@@ -527,6 +534,8 @@ while True: #Creates our game loop. While our loop is active, the game runs.
                 screen.blit(score_message,score_message_rect)
 
     if stage_select:
+        beach = False
+        city = False
         screen.blit(title_surf, (0,0))
         pygame.draw.line(screen,'#39314b',(0,200),(800,200),100)
         pygame.draw.line(screen,'#397b44',(0,75),(400,75),150)
@@ -535,12 +544,15 @@ while True: #Creates our game loop. While our loop is active, the game runs.
         pygame.draw.line(screen,'#397b44',(400,325),(800,325),150)
         screen.blit(stage_text,stage_text_rect)
         screen.blit(beach_stage,beach_rect)
+        screen.blit(city_stage,city_rect)
         
         
 
     if game_active:
         if beach: 
-            screen.blit(beach_surface,(0,0)) #Draws the background image on our display
+            screen.blit(beach_surface,(0,0))
+        if city:
+            screen.blit(city_surface,(0,0)) #Draws the background image on our display
         #Draws the ground image on our display
         # pygame.draw.rect(screen,'#c0e8ec',score_rect) #Creates a background color for the score rectangle
         # pygame.draw.rect(screen,'#c0e8ec',score_rect,10) #Creates a border around the rectangle
